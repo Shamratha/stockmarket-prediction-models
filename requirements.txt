@@ -1,0 +1,14 @@
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch>=2.3
+numpy
+pandas
+matplotlib
+seaborn
+scikit-learn
+xgboost
+statsmodels
+yfinance
+gymnasium
+stable-baselines3
+scipy
+tqdm
