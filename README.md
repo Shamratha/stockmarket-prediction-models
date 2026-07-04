@@ -1,8 +1,9 @@
 # Stock Market 📈
 
-**Modern stock forecasting, trading agents & market simulations** — a 2026 reimagining of the classic
-[huseinzol05/Stock-Prediction-Models](https://github.com/huseinzol05/Stock-Prediction-Models)
-(archived, TensorFlow 1.x), rebuilt from scratch on today's stack:
+**Modern stock forecasting, trading agents & market simulations**, built from scratch on a 2026
+stack — with the statistical rigor most stock-prediction repos skip. It modernizes the ideas
+popularized by the classic [huseinzol05/Stock-Prediction-Models](https://github.com/huseinzol05/Stock-Prediction-Models)
+(archived, TensorFlow 1.x) — and fixes its evaluation:
 
 - **PyTorch** forecasters — LSTM, GRU, Transformer, **N-BEATS**, **PatchTST** — plus ARIMA, XGBoost and a drift baseline
 - **Reinforcement-learning trading agents** — DQN & PPO via stable-baselines3 on a custom **Gymnasium** environment, plus an evolution-strategy agent and rule-based baselines
@@ -231,7 +232,12 @@ tests/
 
 ## Credits & disclaimer
 
-Inspired by [huseinzol05/Stock-Prediction-Models](https://github.com/huseinzol05/Stock-Prediction-Models)
-(Apache-2.0) — the model-zoo spirit and the buy/sell chart style live on; every line here is a new
-implementation. **This is a research/portfolio project, not financial advice.** Past performance of
-any model or agent here says nothing about future returns.
+**All code in this repository is an original implementation.** The project modernizes concepts
+popularized by [huseinzol05/Stock-Prediction-Models](https://github.com/huseinzol05/Stock-Prediction-Models)
+(Apache-2.0, archived) — the model-zoo format and buy/sell chart style — while replacing its
+TensorFlow 1.x notebooks and leakage-prone evaluation with walk-forward significance testing,
+out-of-sample backtests, and a test suite. The bundled offline CSVs in `dataset/` come from that
+repo's dataset (used under Apache-2.0).
+
+**This is a research/portfolio project, not financial advice.** Past performance of any model or
+agent here says nothing about future returns.
