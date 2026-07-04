@@ -22,7 +22,8 @@ from marketpulse.agents.rules import turtle_actions, sma_cross_actions, rsi_acti
 from marketpulse.agents.evolution import EvolutionAgent
 from marketpulse.agents.rl import train_rl_agent, rl_actions
 
-TICKER = sys.argv[1] if len(sys.argv) > 1 else 'GOOG'
+TICKER = (sys.argv[1] if len(sys.argv) > 1 else 'GOOG').upper()
+TK = TICKER.lower()
 ES_ITER = int(os.environ.get('ES_ITER', 200))
 RL_STEPS = int(os.environ.get('RL_STEPS', 100_000))
 FEE_BPS = 10.0
@@ -42,7 +43,7 @@ def main():
     def record(name, actions, train_seconds):
         result = run_backtest(test_prices, actions, fee_bps=FEE_BPS)
         slug = name.lower().replace(' ', '-')
-        plot_backtest(name, test_prices, result, f'agent-{slug}.png', dates=test_dates)
+        plot_backtest(name, test_prices, result, f'agent-{TK}-{slug}.png', dates=test_dates)
         rows.append({
             'agent': name, 'roi_pct': round(result['roi'], 2),
             'buy_hold_pct': round(result['buy_hold_roi'], 2),
@@ -74,7 +75,7 @@ def main():
 
     table = pd.DataFrame(rows)
     os.makedirs(OUTPUT_DIR, exist_ok=True)
-    table.to_csv(os.path.join(OUTPUT_DIR, 'agent_results.csv'), index=False)
+    table.to_csv(os.path.join(OUTPUT_DIR, f'agent_results_{TK}.csv'), index=False)
     print('\n', table.to_string(index=False))
 
 

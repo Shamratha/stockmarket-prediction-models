@@ -1,0 +1,7 @@
+agent,roi_pct,buy_hold_pct,sharpe,max_dd_pct,trades,train_s
+Turtle breakout,-1.93,14.64,-0.25,-6.98,47,0.0
+SMA crossover,0.27,14.64,0.52,-0.42,17,0.0
+RSI mean-reversion,3.57,14.64,1.0,-2.78,28,0.0
+Evolution strategy,11.64,14.64,0.7,-14.6,135,60.2
+DQN,5.42,14.64,0.95,-3.09,138,164.3
+PPO,11.26,14.64,0.63,-15.36,35,158.2
