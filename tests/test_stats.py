@@ -3,8 +3,8 @@
 import numpy as np
 import pytest
 
-from marketpulse.evaluation import metrics_from_returns
-from marketpulse.stats import bootstrap_ci, diebold_mariano
+from stockmarket.evaluation import metrics_from_returns
+from stockmarket.stats import bootstrap_ci, diebold_mariano
 
 rng = np.random.default_rng(7)
 

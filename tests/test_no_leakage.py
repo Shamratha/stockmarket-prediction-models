@@ -3,10 +3,10 @@
 import numpy as np
 import pytest
 
-from marketpulse.data import train_test_split_series
-from marketpulse.forecasting.base import walk_forward
-from marketpulse.forecasting.baselines import DriftForecaster
-from marketpulse.forecasting.torch_models import LSTMForecaster, make_windows
+from stockmarket.data import train_test_split_series
+from stockmarket.forecasting.base import walk_forward
+from stockmarket.forecasting.baselines import DriftForecaster
+from stockmarket.forecasting.torch_models import LSTMForecaster, make_windows
 
 import pandas as pd
 
@@ -69,7 +69,7 @@ def test_make_windows_alignment():
 
 def test_feature_target_is_strictly_future():
     """add_features' target at row t must equal the return realized at t+1."""
-    from marketpulse.data import add_features
+    from stockmarket.data import add_features
 
     idx = pd.date_range('2024-01-01', periods=120)
     close = pd.Series(100 * np.exp(np.cumsum(rng.normal(0, 0.01, 120))), index=idx)

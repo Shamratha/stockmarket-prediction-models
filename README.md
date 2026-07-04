@@ -1,4 +1,4 @@
-# MarketPulse 📈
+# Stock Market 📈
 
 **Modern stock forecasting, trading agents & market simulations** — a 2026 reimagining of the classic
 [huseinzol05/Stock-Prediction-Models](https://github.com/huseinzol05/Stock-Prediction-Models)
@@ -42,6 +42,23 @@ python scripts/forecast.py TSLA patchtst 30
 ```
 
 Smoke-run env vars: `EPOCHS`, `TEST_SIZE` (forecasting) · `ES_ITER`, `RL_STEPS` (agents).
+
+---
+
+## Local dashboard
+
+A FastAPI dashboard visualizes every result — forecasting tables with bootstrap CIs and
+Diebold-Mariano p-values, out-of-sample agent backtests, Monte Carlo simulations, and a live
+quick-forecast widget (ARIMA, ~2s). Runs fully locally; not deployed anywhere (yet):
+
+```bash
+.venv\Scripts\python -m uvicorn app:app --port 8600
+# open http://localhost:8600
+```
+
+<img src="docs/screenshots/dashboard-forecasting.png" width="100%">
+<img src="docs/screenshots/dashboard-agents.png" width="100%">
+<img src="docs/screenshots/dashboard-live-forecast.png" width="100%">
 
 ---
 
@@ -167,7 +184,7 @@ Current max-Sharpe weights: **GOOG 68% · AMD 26% · AAPL 6%**:
 ## Project structure
 
 ```
-marketpulse/
+stockmarket/
   data.py                 yfinance loader + cache + technical features
   evaluation.py           walk-forward metrics & charts
   stats.py                Diebold-Mariano test (HLN-corrected) + bootstrap CIs

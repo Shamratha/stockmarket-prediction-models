@@ -16,11 +16,11 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import numpy as np
 import pandas as pd
 
-from marketpulse.data import load_prices
-from marketpulse.agents.backtest import run_backtest, plot_backtest, OUTPUT_DIR
-from marketpulse.agents.rules import turtle_actions, sma_cross_actions, rsi_actions
-from marketpulse.agents.evolution import EvolutionAgent
-from marketpulse.agents.rl import train_rl_agent, rl_actions
+from stockmarket.data import load_prices
+from stockmarket.agents.backtest import run_backtest, plot_backtest, OUTPUT_DIR
+from stockmarket.agents.rules import turtle_actions, sma_cross_actions, rsi_actions
+from stockmarket.agents.evolution import EvolutionAgent
+from stockmarket.agents.rl import train_rl_agent, rl_actions
 
 TICKER = (sys.argv[1] if len(sys.argv) > 1 else 'GOOG').upper()
 TK = TICKER.lower()

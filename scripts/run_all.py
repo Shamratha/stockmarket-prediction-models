@@ -1,4 +1,4 @@
-"""Run the entire MarketPulse suite: forecasting zoo, trading agents,
+"""Run the entire Stock Market suite: forecasting zoo, trading agents,
 simulations. Charts land in output/, tables in output/*.csv.
 
 Usage: python scripts/run_all.py [TICKER]

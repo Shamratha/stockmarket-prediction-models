@@ -12,9 +12,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 
-from marketpulse.data import load_prices, log_returns
-from marketpulse.simulation.monte_carlo import gbm_paths, dynamic_vol_paths, correlated_paths
-from marketpulse.simulation.portfolio import random_portfolios, optimize, portfolio_stats
+from stockmarket.data import load_prices, log_returns
+from stockmarket.simulation.monte_carlo import gbm_paths, dynamic_vol_paths, correlated_paths
+from stockmarket.simulation.portfolio import random_portfolios, optimize, portfolio_stats
 
 sns.set_theme(style='whitegrid')
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

@@ -12,16 +12,16 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import numpy as np
 
-from marketpulse.data import load_prices, log_returns
+from stockmarket.data import load_prices, log_returns
 
 MODELS = {
-    'drift': ('marketpulse.forecasting.baselines', 'DriftForecaster'),
-    'arima': ('marketpulse.forecasting.baselines', 'ARIMAForecaster'),
-    'lstm': ('marketpulse.forecasting.torch_models', 'LSTMForecaster'),
-    'gru': ('marketpulse.forecasting.torch_models', 'GRUForecaster'),
-    'transformer': ('marketpulse.forecasting.torch_models', 'TransformerForecaster'),
-    'nbeats': ('marketpulse.forecasting.nbeats', 'NBeatsForecaster'),
-    'patchtst': ('marketpulse.forecasting.patchtst', 'PatchTSTForecaster'),
+    'drift': ('stockmarket.forecasting.baselines', 'DriftForecaster'),
+    'arima': ('stockmarket.forecasting.baselines', 'ARIMAForecaster'),
+    'lstm': ('stockmarket.forecasting.torch_models', 'LSTMForecaster'),
+    'gru': ('stockmarket.forecasting.torch_models', 'GRUForecaster'),
+    'transformer': ('stockmarket.forecasting.torch_models', 'TransformerForecaster'),
+    'nbeats': ('stockmarket.forecasting.nbeats', 'NBeatsForecaster'),
+    'patchtst': ('stockmarket.forecasting.patchtst', 'PatchTSTForecaster'),
 }
 
 

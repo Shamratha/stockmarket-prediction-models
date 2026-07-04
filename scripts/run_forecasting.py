@@ -14,15 +14,15 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import numpy as np
 
-from marketpulse.data import load_prices, log_returns, add_features, train_test_split_series
-from marketpulse.evaluation import metrics_from_returns, plot_one_step, plot_multi_step, results_table
-from marketpulse.forecasting.base import walk_forward
-from marketpulse.forecasting.baselines import DriftForecaster, ARIMAForecaster
-from marketpulse.forecasting.xgb import XGBForecaster
-from marketpulse.forecasting.torch_models import LSTMForecaster, GRUForecaster, TransformerForecaster
-from marketpulse.forecasting.nbeats import NBeatsForecaster
-from marketpulse.forecasting.patchtst import PatchTSTForecaster
-from marketpulse.stats import diebold_mariano, bootstrap_ci
+from stockmarket.data import load_prices, log_returns, add_features, train_test_split_series
+from stockmarket.evaluation import metrics_from_returns, plot_one_step, plot_multi_step, results_table
+from stockmarket.forecasting.base import walk_forward
+from stockmarket.forecasting.baselines import DriftForecaster, ARIMAForecaster
+from stockmarket.forecasting.xgb import XGBForecaster
+from stockmarket.forecasting.torch_models import LSTMForecaster, GRUForecaster, TransformerForecaster
+from stockmarket.forecasting.nbeats import NBeatsForecaster
+from stockmarket.forecasting.patchtst import PatchTSTForecaster
+from stockmarket.stats import diebold_mariano, bootstrap_ci
 
 TICKER = (sys.argv[1] if len(sys.argv) > 1 else 'GOOG').upper()
 TK = TICKER.lower()

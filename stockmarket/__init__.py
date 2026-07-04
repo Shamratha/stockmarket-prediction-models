@@ -1,4 +1,4 @@
-"""MarketPulse — modern stock forecasting, trading agents & market simulations.
+"""Stock Market — modern stock forecasting, trading agents & market simulations.
 
 Inspired by the classic huseinzol05/Stock-Prediction-Models repo, rebuilt on a
 2026 stack: PyTorch forecasters, Gymnasium + stable-baselines3 trading agents,

@@ -3,7 +3,7 @@
 import numpy as np
 import pytest
 
-from marketpulse.agents.backtest import run_backtest
+from stockmarket.agents.backtest import run_backtest
 
 
 def test_buy_sell_cash_arithmetic_with_fees():
@@ -59,7 +59,7 @@ def test_max_drawdown_negative_or_zero():
 
 def test_trading_env_matches_backtester_fees():
     """One buy step in the gym env must debit exactly price * (1 + fee)."""
-    from marketpulse.agents.env import TradingEnv
+    from stockmarket.agents.env import TradingEnv
 
     prices = np.full(40, 100.0)
     env = TradingEnv(prices, window=5, initial_money=10000, fee_bps=10)
@@ -73,7 +73,7 @@ def test_trading_env_matches_backtester_fees():
 
 
 def test_trading_env_reward_is_log_value_change():
-    from marketpulse.agents.env import TradingEnv
+    from stockmarket.agents.env import TradingEnv
 
     prices = np.concatenate([np.full(30, 100.0), [100.0, 110.0, 121.0]])
     env = TradingEnv(prices, window=5, initial_money=10000, fee_bps=0)

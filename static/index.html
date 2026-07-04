@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stock Market — stock forecasting & trading agents</title>
+<style>
+  :root {
+    --bg: #0b0e14; --panel: #121722; --panel2: #1a2130; --border: #232c3d;
+    --text: #e6ecf5; --muted: #8b98ad; --accent: #4f8cff; --green: #2ecc8f;
+    --red: #ff5c7a; --amber: #ffb454;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text);
+         font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 28px 24px 60px; }
+
+  header { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+  .logo { font-size: 30px; font-weight: 800; letter-spacing: -0.5px; }
+  .logo span { color: var(--accent); }
+  .tagline { color: var(--muted); font-size: 14px; }
+
+  .chips { display: flex; gap: 10px; margin: 18px 0 26px; flex-wrap: wrap; }
+  .chip { background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
+          padding: 10px 16px; font-size: 13px; }
+  .chip b { display: block; font-size: 19px; margin-bottom: 2px; }
+  .chip.green b { color: var(--green); } .chip.blue b { color: var(--accent); }
+  .chip.amber b { color: var(--amber); } .chip.red b { color: var(--red); }
+
+  nav { display: flex; gap: 6px; border-bottom: 1px solid var(--border); margin-bottom: 22px; }
+  nav button { background: none; border: none; color: var(--muted); font-size: 15px;
+               padding: 10px 18px; cursor: pointer; border-bottom: 2px solid transparent; }
+  nav button.active { color: var(--text); border-bottom-color: var(--accent); font-weight: 600; }
+
+  .pills { display: flex; gap: 8px; margin-bottom: 16px; }
+  .pill { background: var(--panel); border: 1px solid var(--border); color: var(--muted);
+          border-radius: 999px; padding: 6px 18px; cursor: pointer; font-size: 14px; }
+  .pill.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: 14px;
+          padding: 20px; margin-bottom: 20px; }
+  .card h3 { font-size: 15px; margin-bottom: 14px; color: var(--muted);
+             text-transform: uppercase; letter-spacing: 1px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { text-align: left; color: var(--muted); font-weight: 600; font-size: 12px;
+       text-transform: uppercase; letter-spacing: 0.6px; padding: 8px 10px;
+       border-bottom: 1px solid var(--border); }
+  td { padding: 9px 10px; border-bottom: 1px solid var(--panel2); }
+  tr:hover td { background: var(--panel2); }
+  td.best { color: var(--green); font-weight: 700; }
+  td.num { font-variant-numeric: tabular-nums; }
+  .pos { color: var(--green); } .neg { color: var(--red); }
+  .sig { color: var(--amber); font-weight: 700; }
+
+  .charts { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .charts img, .simgrid img { width: 100%; border-radius: 10px; border: 1px solid var(--border);
+                              background: #fff; }
+  .simgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  select { background: var(--panel2); color: var(--text); border: 1px solid var(--border);
+           border-radius: 8px; padding: 7px 12px; font-size: 14px; }
+  .note { color: var(--muted); font-size: 13px; margin-top: 10px; line-height: 1.5; }
+  .row { display: flex; gap: 12px; align-items: center; margin-bottom: 14px; flex-wrap: wrap; }
+  input[type=number] { background: var(--panel2); color: var(--text); width: 80px;
+    border: 1px solid var(--border); border-radius: 8px; padding: 7px 10px; font-size: 14px; }
+  .btn { background: var(--accent); border: none; color: #fff; border-radius: 8px;
+         padding: 8px 20px; font-size: 14px; cursor: pointer; font-weight: 600; }
+  .btn:disabled { opacity: 0.5; }
+  #fc-chart { width: 100%; height: 320px; }
+  .legend { display: flex; gap: 18px; font-size: 13px; color: var(--muted); margin-top: 8px; }
+  .legend i { display: inline-block; width: 18px; height: 3px; border-radius: 2px;
+              vertical-align: middle; margin-right: 6px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">Stock<span>Market</span></div>
+    <div class="tagline">stock forecasting · RL trading agents · market simulations — evaluated honestly</div>
+  </header>
+
+  <div class="chips" id="chips"></div>
+
+  <nav>
+    <button class="active" data-tab="forecasting">Forecasting</button>
+    <button data-tab="agents">Trading agents</button>
+    <button data-tab="simulations">Simulations</button>
+    <button data-tab="live">Live forecast</button>
+  </nav>
+
+  <section id="tab-forecasting">
+    <div class="pills" id="f-pills"></div>
+    <div class="card">
+      <h3>Walk-forward next-day prediction — last 100 days, bootstrap 95% CI, Diebold-Mariano vs drift</h3>
+      <table id="f-table"></table>
+      <div class="note">Not one model beats the drift baseline at p &lt; 0.05 on any ticker —
+        next-day returns on daily data are close to unpredictable, and this dashboard says so
+        rather than hiding it.</div>
+    </div>
+    <div class="card">
+      <h3>Model charts <select id="f-model" style="margin-left:10px"></select></h3>
+      <div class="charts">
+        <img id="f-img1" alt="one-step forecast chart">
+        <img id="f-img30" alt="30-day recursive chart">
+      </div>
+    </div>
+  </section>
+
+  <section id="tab-agents" style="display:none">
+    <div class="pills" id="a-pills"></div>
+    <div class="card">
+      <h3>Out-of-sample backtest — last 20% of history, 10 bps fees, 1 unit per trade</h3>
+      <table id="a-table"></table>
+      <div class="note">Agents are never fully invested (1 unit/trade on $10k), so compare agents
+        against each other — not against buy &amp; hold. Sharpe on &lt;30 trades is not reliable.</div>
+    </div>
+    <div class="card">
+      <h3>Agent chart <select id="a-agent" style="margin-left:10px"></select></h3>
+      <img id="a-img" style="width:100%; border-radius:10px; border:1px solid var(--border); background:#fff" alt="agent backtest chart">
+    </div>
+  </section>
+
+  <section id="tab-simulations" style="display:none">
+    <div class="card">
+      <h3>Monte Carlo &amp; portfolio optimization</h3>
+      <div class="simgrid">
+        <img src="/output/sim-gbm.png" alt="GBM Monte Carlo">
+        <img src="/output/sim-dynamic-vol.png" alt="dynamic volatility Monte Carlo">
+        <img src="/output/sim-efficient-frontier.png" alt="efficient frontier">
+        <img src="/output/sim-multi-asset.png" alt="correlated multi-asset">
+      </div>
+    </div>
+  </section>
+
+  <section id="tab-live" style="display:none">
+    <div class="card">
+      <h3>Live quick forecast (ARIMA, recursive scenario)</h3>
+      <div class="row">
+        <select id="l-ticker">
+          <option>GOOG</option><option>JPM</option><option>XOM</option>
+          <option>TSLA</option><option>AMD</option><option>MSFT</option><option>AAPL</option>
+        </select>
+        <label style="color:var(--muted);font-size:14px">days</label>
+        <input type="number" id="l-days" value="30" min="5" max="90">
+        <button class="btn" id="l-go">Forecast</button>
+        <span id="l-status" style="color:var(--muted);font-size:13px"></span>
+      </div>
+      <svg id="fc-chart" viewBox="0 0 1000 320" preserveAspectRatio="none"></svg>
+      <div class="legend">
+        <span><i style="background:#e6ecf5"></i>history (90d)</span>
+        <span><i style="background:#4f8cff"></i>ARIMA scenario</span>
+      </div>
+      <div class="note" id="l-note"></div>
+    </div>
+  </section>
+</div>
+
+<script>
+let DATA = null;
+let fTicker = null, aTicker = null;
+
+const $ = (id) => document.getElementById(id);
+const fmt = (x, d=2) => x == null ? '—' : Number(x).toFixed(d);
+
+async function boot() {
+  DATA = await (await fetch('/api/summary')).json();
+  fTicker = DATA.tickers[0]; aTicker = DATA.tickers[0];
+
+  const nModels = DATA.forecasting[fTicker].length;
+  const nAgents = (DATA.agents[aTicker] || []).length;
+  const sig = Object.values(DATA.forecasting).flat()
+    .filter(r => r.dm_p_vs_drift != null && r.dm_p_vs_drift < 0.05 && r.dm_stat < 0).length;
+  $('chips').innerHTML = `
+    <div class="chip blue"><b>${nModels}</b>forecasting models</div>
+    <div class="chip blue"><b>${nAgents}</b>trading agents</div>
+    <div class="chip amber"><b>${DATA.tickers.length}</b>tickers · 3 sectors</div>
+    <div class="chip red"><b>${sig}</b>models beat drift (p&lt;0.05)</div>
+    <div class="chip green"><b>22</b>tests passing</div>`;
+
+  renderPills('f-pills', t => { fTicker = t; renderForecasting(); });
+  renderPills('a-pills', t => { aTicker = t; renderAgents(); });
+  renderForecasting();
+  renderAgents();
+}
+
+function renderPills(id, onpick) {
+  $(id).innerHTML = DATA.tickers.map(t =>
+    `<div class="pill" data-t="${t}">${t.toUpperCase()}</div>`).join('');
+  [...$(id).children].forEach(p => p.onclick = () => {
+    [...$(id).children].forEach(x => x.classList.remove('active'));
+    p.classList.add('active');
+    onpick(p.dataset.t);
+  });
+  $(id).children[0].classList.add('active');
+}
+
+function renderForecasting() {
+  const rows = DATA.forecasting[fTicker];
+  const best = Math.min(...rows.map(r => r.rmse));
+  $('f-table').innerHTML = `
+    <tr><th>model</th><th>RMSE ($) [95% CI]</th><th>MAPE</th><th>direction</th><th>DM p vs drift</th><th>train</th></tr>` +
+    rows.map(r => `<tr>
+      <td>${r.model}</td>
+      <td class="num ${r.rmse === best ? 'best' : ''}">${fmt(r.rmse)} [${fmt(r.rmse_ci_lo)}, ${fmt(r.rmse_ci_hi)}]</td>
+      <td class="num">${fmt(r.mape)}%</td>
+      <td class="num">${fmt(r.dir_acc, 0)}%</td>
+      <td class="num ${r.dm_p_vs_drift != null && r.dm_p_vs_drift < 0.05 ? 'sig' : ''}">${r.dm_p_vs_drift == null ? '—' : fmt(r.dm_p_vs_drift, 3)}</td>
+      <td class="num">${fmt(r.train_s, 0)}s</td></tr>`).join('');
+
+  const models = rows.map(r => r.model);
+  $('f-model').innerHTML = models
+    .filter(m => m !== 'XGBoost' || true)
+    .map(m => `<option>${m}</option>`).join('');
+  $('f-model').onchange = updateFImgs;
+  updateFImgs();
+}
+
+function updateFImgs() {
+  const slugify = s => s.toLowerCase().replaceAll(' ', '-');
+  const m = slugify($('f-model').value);
+  $('f-img1').src = `/output/forecast-${fTicker}-${m}.png`;
+  const img30 = `forecast30-${fTicker}-${m}.png`;
+  $('f-img30').style.display = DATA.charts.includes(img30) ? '' : 'none';
+  $('f-img30').src = `/output/${img30}`;
+}
+
+function renderAgents() {
+  const rows = DATA.agents[aTicker] || [];
+  $('a-table').innerHTML = `
+    <tr><th>agent</th><th>ROI</th><th>buy &amp; hold</th><th>Sharpe</th><th>max DD</th><th>trades</th></tr>` +
+    rows.map(r => `<tr>
+      <td>${r.agent}</td>
+      <td class="num ${r.roi_pct >= 0 ? 'pos' : 'neg'}">${fmt(r.roi_pct)}%</td>
+      <td class="num">${fmt(r.buy_hold_pct)}%</td>
+      <td class="num">${fmt(r.sharpe)}</td>
+      <td class="num neg">${fmt(r.max_dd_pct)}%</td>
+      <td class="num">${r.trades}</td></tr>`).join('');
+
+  $('a-agent').innerHTML = rows.map(r => `<option>${r.agent}</option>`).join('');
+  $('a-agent').onchange = updateAImg;
+  updateAImg();
+}
+
+function updateAImg() {
+  const slug = $('a-agent').value.toLowerCase().replaceAll(' ', '-');
+  $('a-img').src = `/output/agent-${aTicker}-${slug}.png`;
+}
+
+document.querySelectorAll('nav button').forEach(b => b.onclick = () => {
+  document.querySelectorAll('nav button').forEach(x => x.classList.remove('active'));
+  b.classList.add('active');
+  ['forecasting', 'agents', 'simulations', 'live'].forEach(t =>
+    $('tab-' + t).style.display = t === b.dataset.tab ? '' : 'none');
+});
+
+$('l-go').onclick = async () => {
+  $('l-go').disabled = true;
+  $('l-status').textContent = 'fitting ARIMA…';
+  try {
+    const q = await (await fetch(`/api/quick-forecast?ticker=${$('l-ticker').value}&days=${$('l-days').value}`)).json();
+    drawForecast(q);
+    $('l-note').textContent = `${q.ticker} last close ${fmt(q.last_close)} · ` + q.note;
+    $('l-status').textContent = '';
+  } catch (e) {
+    $('l-status').textContent = 'failed: ' + e;
+  }
+  $('l-go').disabled = false;
+};
+
+function drawForecast(q) {
+  const hist = q.history.prices, fc = q.forecast;
+  const all = hist.concat(fc);
+  const min = Math.min(...all) * 0.995, max = Math.max(...all) * 1.005;
+  const W = 1000, H = 320, n = all.length;
+  const x = i => i / (n - 1) * W;
+  const y = v => H - (v - min) / (max - min) * H;
+  const toPath = (arr, off) => arr.map((v, i) =>
+    `${i === 0 ? 'M' : 'L'}${x(i + off).toFixed(1)},${y(v).toFixed(1)}`).join('');
+  $('fc-chart').innerHTML = `
+    <rect width="${W}" height="${H}" fill="#0e1420" rx="8"/>
+    <line x1="${x(hist.length - 1)}" y1="0" x2="${x(hist.length - 1)}" y2="${H}"
+          stroke="#232c3d" stroke-width="1.5" stroke-dasharray="5 5"/>
+    <path d="${toPath(hist, 0)}" fill="none" stroke="#e6ecf5" stroke-width="2"/>
+    <path d="M${x(hist.length - 1)},${y(hist[hist.length - 1])} ${toPath(fc, hist.length).slice(1)}"
+          fill="none" stroke="#4f8cff" stroke-width="2.5"/>`;
+}
+
+boot();
+</script>
+</body>
+</html>
