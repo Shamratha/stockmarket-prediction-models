@@ -107,6 +107,11 @@ you otherwise is leaking the future into its metrics.
 
 ## Results — trading agents (out-of-sample last 20% ≈ 1 year, 10 bps fees per side)
 
+> **Read before comparing to buy & hold:** agents trade **one unit per transaction** on a $10k
+> account (the original repo's convention, kept so every agent is comparable), so they are never
+> fully invested — their ROI is structurally capped versus buy & hold in a bull market. The fair
+> comparisons are agent vs. agent, and Sharpe / drawdown rather than raw ROI.
+
 ROI (%) by ticker, with buy & hold for scale:
 
 | agent | GOOG | JPM | XOM | profitable on |
@@ -128,9 +133,9 @@ Reading it honestly:
   *loses money* on JPM. A single-ticker table would have been cherry-picking.
 - The **evolution-strategy agent is the only one consistently profitable and near buy & hold**
   on JPM and XOM; the RL agents (PPO especially) are strong but less stable across regimes.
-- Agents trade **one unit per transaction** (the original repo's convention, kept so every agent is
-  comparable) — so ROI on a $10k account is structurally capped versus fully-invested buy & hold in
-  a bull market (GOOG's +97.8% year is unreachable by design). Compare agents against *each other*.
+- Because of the one-unit sizing noted above, GOOG's +97.8% buy & hold year is unreachable by
+  design — the gap is a property of the position-sizing convention, not evidence the agents
+  failed to learn.
 
 > ⚠️ A Sharpe ratio computed from ~20 trades (SMA crossover) is not statistically reliable — it is
 > shown for completeness, not as a recommendation. Treat any single-year, single-ticker backtest
@@ -149,7 +154,9 @@ Monte Carlo, 252 trading days ahead (300 paths, p5/p50/p95 bands):
 <img src="output/sim-gbm.png" width="70%">
 <img src="output/sim-dynamic-vol.png" width="70%">
 
-Efficient frontier over GOOG / TSLA / AMD / MSFT / AAPL (20k random portfolios + SLSQP optimum).
+Efficient frontier over GOOG / TSLA / AMD / MSFT / AAPL (20k random portfolios + SLSQP optimum) —
+a 5-asset universe chosen to give the portfolio-optimization demo enough correlated-but-distinct
+assets to produce a meaningful frontier; it is independent of the 3-ticker evaluation above.
 Current max-Sharpe weights: **GOOG 68% · AMD 26% · AAPL 6%**:
 
 <img src="output/sim-efficient-frontier.png" width="55%">
