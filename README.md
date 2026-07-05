@@ -50,12 +50,17 @@ Smoke-run env vars: `EPOCHS`, `TEST_SIZE` (forecasting) · `ES_ITER`, `RL_STEPS`
 
 A FastAPI dashboard visualizes every result — forecasting tables with bootstrap CIs and
 Diebold-Mariano p-values, out-of-sample agent backtests, Monte Carlo simulations, and a live
-quick-forecast widget (ARIMA, ~2s). Runs fully locally; not deployed anywhere (yet):
+quick-forecast widget (ARIMA, ~2s).
 
 ```bash
 .venv\Scripts\python -m uvicorn app:app --port 8600
 # open http://localhost:8600
 ```
+
+Deployable to [Render](https://render.com) via the included `render.yaml` (slim build — no
+training deps needed at runtime; price data is bundled so the demo works even where Yahoo
+Finance blocks cloud IPs). Free-tier instances sleep when idle, so the first request can take
+~1 minute to wake.
 
 <img src="docs/screenshots/dashboard-forecasting.png" width="100%">
 <img src="docs/screenshots/dashboard-agents.png" width="100%">

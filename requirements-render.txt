@@ -1,0 +1,10 @@
+# Slim dependency set for the Render web service (dashboard only).
+# Heavy training deps (torch, stable-baselines3, xgboost) are NOT needed at
+# runtime — charts and result tables are pre-generated into output/.
+fastapi
+uvicorn
+numpy
+pandas
+statsmodels
+scipy
+yfinance

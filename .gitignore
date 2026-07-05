@@ -2,7 +2,8 @@
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
-data_cache/
+data_cache/*
+!data_cache/*_5y_1d.csv
 models_cache/
 logs/
 *.zip
