@@ -1,5 +1,7 @@
 # Stock Market 📈
 
+**🔴 Live demo: [stockmarket-dashboard-x1xe.onrender.com](https://stockmarket-dashboard-x1xe.onrender.com/)** *(free tier — first load may take ~1 min to wake)*
+
 **Modern stock forecasting, trading agents & market simulations**, built from scratch on a 2026
 stack — with the statistical rigor most stock-prediction repos skip. It modernizes the ideas
 popularized by the classic [huseinzol05/Stock-Prediction-Models](https://github.com/huseinzol05/Stock-Prediction-Models)
@@ -57,10 +59,10 @@ quick-forecast widget (ARIMA, ~2s).
 # open http://localhost:8600
 ```
 
-Deployable to [Render](https://render.com) via the included `render.yaml` (slim build — no
-training deps needed at runtime; price data is bundled so the demo works even where Yahoo
-Finance blocks cloud IPs). Free-tier instances sleep when idle, so the first request can take
-~1 minute to wake.
+Also deployed on [Render](https://render.com) — **[live demo](https://stockmarket-dashboard-x1xe.onrender.com/)** —
+via the included `render.yaml` (slim build — no training deps needed at runtime; price data is
+bundled so the demo works even where Yahoo Finance blocks cloud IPs). Free-tier instances sleep
+when idle, so the first request can take ~1 minute to wake.
 
 <img src="docs/screenshots/dashboard-forecasting.png" width="100%">
 <img src="docs/screenshots/dashboard-agents.png" width="100%">
